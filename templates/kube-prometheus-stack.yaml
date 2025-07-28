@@ -1,4 +1,4 @@
-{{ if .Values.argocd.prometheus.enabled }}
+{{ if .Values.argocd.kube-prometheus-stack.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
