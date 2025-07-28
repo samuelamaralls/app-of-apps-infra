@@ -1,0 +1,3 @@
+argocd:
+  kube-prometheus-stack:
+    enabled: true
