@@ -1,4 +1,4 @@
-{{ if .Values.argocd.kube-prometheus-stack.enabled }}
+{{- if (index (index (index .Values "argocd") "kube-prometheus-stack") "enabled") }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -24,4 +24,4 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-{{ end }}
+{{- end }}
