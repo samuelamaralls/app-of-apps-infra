@@ -1,3 +1,62 @@
 argocd:
+
   kube-prometheus-stack:
     enabled: true
+
+    grafana:
+      enabled: true
+      
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+      dashboards:
+        loki:
+          loki-logs:
+            file: /var/lib/grafana/dashboards/loki-logs.json
+          promtail-metrics:
+            file: /var/lib/grafana/dashboards/promtail-metrics.json
+
+  loki:
+    enabled: true
+    isDefault: true
+  
+    # Armazenamento em arquivos (para testes/labs — use outro backend em produção)
+    persistence:
+      enabled: false
+  
+    config:
+      table_manager:
+        retention_deletes_enabled: true
+        retention_period: 7d
+      schema_config:
+        configs:
+          - from: 2022-01-01
+            store: boltdb-shipper
+            object_store: filesystem
+            schema: v11
+            index:
+              prefix: index_sim
+              period: 24h
+      storage_config:
+        boltdb_shipper:
+          active_index_directory: /var/loki/index
+          cache_location: /var/loki/index_cache
+          shared_store: filesystem
+        filesystem:
+          directory: /var/loki/chunks
+
+  promtail:
+    enabled: true
+
+    config:
+      clients:
+        - url: http://loki:3100/loki/api/v1/push
+      snippets:
+        pipeline_stages:
+          - docker: {}
+      positions:
+        filename: /tmp/positions.yaml
+      server:
+        http_listen_port: 9080
+        grpc_listen_port: 0

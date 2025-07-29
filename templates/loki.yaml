@@ -1,0 +1,27 @@
+{{- if (index (index (index .Values "argocd") "kube-prometheus-stack") "enabled") }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://grafana.github.io/helm-charts'
+    chart: loki
+    targetRevision: loki-3.0.1
+    helm:
+      valueFiles:
+      - $values/values.yaml
+  - repoURL: 'https://github.com/samuelamaralls/app-of-apps-infra.git'
+    targetRevision: main
+    ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  destination:
+    namespace: loki
+    server: https://kubernetes.default.svc
+{{- end }}

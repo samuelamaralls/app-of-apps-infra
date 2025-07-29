@@ -1,0 +1,27 @@
+{{- if (index (index (index .Values "argocd") "promtail") "enabled") }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: promtail
+      targetRevision: promtail-6.15.3
+      helm:
+        valueFiles:
+          - $values/values.yaml
+    - repoURL: 'https://github.com/samuelamaralls/app-of-apps-infra.git'
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    namespace: loki
+    server: https://kubernetes.default.svc
+{{- end }}
