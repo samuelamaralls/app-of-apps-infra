@@ -1,15 +1,15 @@
-{{- if (index (index (index .Values "argocd") "loki") "enabled") }}
+{{- if (index (index (index .Values "argocd") "ingress-nginx") "enabled") }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: loki
+  name: ingress-nginx
   namespace: argocd
 spec:
   project: default
   sources:
-  - repoURL: 'https://grafana.github.io/helm-charts'
-    chart: loki
-    targetRevision: loki-3.0.1
+  - repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    chart: ingress-nginx
+    targetRevision: 4.9.1
     helm:
       valueFiles:
       - $values/values.yaml
@@ -22,6 +22,6 @@ spec:
     syncOptions:
     - CreateNamespace=true
   destination:
-    namespace: loki
+    namespace: ingress-nginx
     server: https://kubernetes.default.svc
 {{- end }}

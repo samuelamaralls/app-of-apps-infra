@@ -5,7 +5,7 @@ argocd:
 
     grafana:
       enabled: true
-      
+
       sidecar:
         dashboards:
           enabled: true
@@ -60,3 +60,6 @@ argocd:
       server:
         http_listen_port: 9080
         grpc_listen_port: 0
+
+  ingress-nginx:
+    enabled: true

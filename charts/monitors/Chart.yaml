@@ -1,0 +1,4 @@
+apiVersion: v2
+name: monitors
+version: 0.1.0
+description: Chart com dashboards padrão para o Grafana
