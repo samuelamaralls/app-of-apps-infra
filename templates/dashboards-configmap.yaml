@@ -1,4 +1,4 @@
-{{- $path := "charts/monitors/dashboards" }}
+{{- $path := "dashboards" }}
 {{- $files := .Files.Glob (printf "%s/*.json" $path) }}
 {{- range $filePath, $file := $files }}
 apiVersion: v1
@@ -10,6 +10,6 @@ metadata:
   namespace: monitoring
 data:
   {{ base $filePath }}: |
-{{ $file | indent 4 }}
+{{ $file | toString | indent 4 }}
 ---
 {{- end }}
