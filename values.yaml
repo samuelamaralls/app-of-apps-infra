@@ -3,6 +3,9 @@ argocd:
   kube-prometheus-stack:
     enabled: true
 
+    crds:
+      enabled: true
+
     grafana:
       enabled: true
 
