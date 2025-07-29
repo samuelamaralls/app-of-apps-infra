@@ -10,6 +10,7 @@ argocd:
         dashboards:
           enabled: true
           label: grafana_dashboard
+
       dashboards:
         loki:
           loki-logs:
@@ -17,18 +18,35 @@ argocd:
           promtail-metrics:
             file: /var/lib/grafana/dashboards/promtail-metrics.json
 
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-gateway.loki.svc.cluster.local
+          isDefault: false
+          jsonData:
+            httpHeaderName1: "X-Scope-OrgID"
+          secureJsonData:
+            httpHeaderValue1: "1"
+
   loki:
     enabled: true
+
+    auth_enabled: true
+
+    gateway:
+      enabled: true
+
     isDefault: true
-  
-    # Armazenamento em arquivos (para testes/labs — use outro backend em produção)
+
     persistence:
       enabled: false
-  
+
     config:
       table_manager:
         retention_deletes_enabled: true
         retention_period: 7d
+
       schema_config:
         configs:
           - from: 2022-01-01
@@ -38,11 +56,13 @@ argocd:
             index:
               prefix: index_sim
               period: 24h
+
       storage_config:
         boltdb_shipper:
           active_index_directory: /var/loki/index
           cache_location: /var/loki/index_cache
           shared_store: filesystem
+
         filesystem:
           directory: /var/loki/chunks
 
@@ -51,12 +71,21 @@ argocd:
 
     config:
       clients:
-        - url: http://loki:3100/loki/api/v1/push
+        - url: http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push
+          external_labels:
+            cluster: "dev"
+          basic_auth:
+            username: "fake"  # não é usado, mas requerido pelo client se usar headers
+            password: "fake"
+          tenant_id: "1"  # <--- equivalente ao X-Scope-OrgID: 1
+
       snippets:
         pipeline_stages:
           - docker: {}
+
       positions:
         filename: /tmp/positions.yaml
+
       server:
         http_listen_port: 9080
         grpc_listen_port: 0
