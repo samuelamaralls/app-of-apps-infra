@@ -13,9 +13,6 @@ spec:
       helm:
         valueFiles:
           - $values/values.yaml
-        parameters:
-          - name: crds.create
-            value: "false"
     - repoURL: 'https://github.com/samuelamaralls/app-of-apps-infra.git'
       targetRevision: main
       ref: values
@@ -26,12 +23,6 @@ spec:
     automated:
       selfHeal: true
     syncOptions:
-      - SkipCRDs=true
+      - ServerSideApply=true
       - CreateNamespace=true
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      name: .*
-      jsonPointers:
-        - /metadata/annotations
 {{- end }}
