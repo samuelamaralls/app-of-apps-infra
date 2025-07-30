@@ -107,10 +107,10 @@ argocd:
           enabled: true
           annotations:
             prometheus.io/scrape: "true"
-            prometheus.io/port: "10254"
-        serviceMonitor:
-          enabled: true
-          namespace: monitoring
-          additionalLabels:
-            release: kube-prometheus-stack   # ou o label que seu Prometheus Operator usa para seleção
-          scrapeInterval: 30s
+            prometheus.io/port: "10254"  
+      serviceMonitor:
+        enabled: true
+        namespace: monitoring
+        additionalLabels:
+          release: kube-prometheus-stack
+        scrapeInterval: 30s
