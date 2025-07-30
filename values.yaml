@@ -97,3 +97,16 @@ argocd:
 
   ingress-nginx:
     enabled: true
+  
+    controller:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: monitoring
+          namespace: monitoring
+        service:
+          annotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "10254"
