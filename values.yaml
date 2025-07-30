@@ -112,5 +112,5 @@ argocd:
           enabled: true
           namespace: monitoring
           additionalLabels:
-            release: monitoring   # ou o label que seu Prometheus Operator usa para seleção
+            release: kube-prometheus-stack   # ou o label que seu Prometheus Operator usa para seleção
           scrapeInterval: 30s
