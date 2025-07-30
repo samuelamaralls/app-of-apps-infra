@@ -100,7 +100,7 @@ argocd:
   
     controller:
       metrics:
-        enabled: false
+        enabled: true
         port: 10254
         portName: metrics
         service:
@@ -111,7 +111,7 @@ argocd:
           servicePort: 10254
           type: ClusterIP
         serviceMonitor:
-          enabled: false
+          enabled: true
           additionalLabels:
             release: kube-prometheus-stack
           namespace: monitoring
