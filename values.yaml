@@ -108,9 +108,11 @@ argocd:
           annotations:
             prometheus.io/scrape: "true"
             prometheus.io/port: "10254"  
-      serviceMonitor:
-        enabled: true
-        namespace: monitoring
-        additionalLabels:
-          release: kube-prometheus-stack
-        scrapeInterval: 30s
+          servicePort: 10254
+          type: ClusterIP
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+          namespace: monitoring
+          scrapeInterval: 30s
