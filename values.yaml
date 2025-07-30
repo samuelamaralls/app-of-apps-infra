@@ -101,12 +101,16 @@ argocd:
     controller:
       metrics:
         enabled: true
-        serviceMonitor:
-          enabled: true
-          additionalLabels:
-            release: monitoring
-          namespace: monitoring
+        port: 10254
+        portName: metrics
         service:
+          enabled: true
           annotations:
             prometheus.io/scrape: "true"
             prometheus.io/port: "10254"
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+          additionalLabels:
+            release: monitoring   # ou o label que seu Prometheus Operator usa para seleção
+          scrapeInterval: 30s
