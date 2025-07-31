@@ -6,6 +6,14 @@ ingress:
   ingressClassName: "nginx"
   pathType: ImplementationSpecific
   hostname: keycloak.thesams.site
+  annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      #nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  tls:
+      - hosts:
+          - keycloak.thesams.site
+        secretName: keycloak-tls
 postgresql:
   enabled: true
   auth:
