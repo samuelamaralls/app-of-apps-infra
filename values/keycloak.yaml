@@ -1,0 +1,18 @@
+auth:
+  adminUser: admin
+  adminPassword: admin
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  pathType: ImplementationSpecific
+  hostname: keycloak.thesams.site
+postgresql:
+  enabled: true
+  auth:
+    username: bn_keycloak
+    password: 12345678
+    database: keycloakdb
+
+  persistence:
+    enabled: true              
+    size: 8Gi 

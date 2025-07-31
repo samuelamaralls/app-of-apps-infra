@@ -1,0 +1,142 @@
+argocd:
+
+  kube-prometheus-stack:
+    enabled: true
+
+    #crds:
+    #  enabled: false
+
+    grafana:
+      enabled: true
+
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+        datasources:
+          enabled: true
+
+      dashboards:
+        loki:
+          loki-logs:
+            file: /var/lib/grafana/dashboards/loki-logs.json
+          promtail-metrics:
+            file: /var/lib/grafana/dashboards/promtail-metrics.json
+
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-gateway.loki.svc.cluster.local
+          isDefault: false
+          jsonData:
+            httpHeaderName1: "X-Scope-OrgID"
+          secureJsonData:
+            httpHeaderValue1: "1"
+
+  loki:
+    enabled: true
+
+    auth_enabled: true
+
+    gateway:
+      enabled: true
+
+    isDefault: true
+
+    persistence:
+      enabled: false
+
+    config:
+      table_manager:
+        retention_deletes_enabled: true
+        retention_period: 7d
+
+      schema_config:
+        configs:
+          - from: 2022-01-01
+            store: boltdb-shipper
+            object_store: filesystem
+            schema: v11
+            index:
+              prefix: index_sim
+              period: 24h
+
+      storage_config:
+        boltdb_shipper:
+          active_index_directory: /var/loki/index
+          cache_location: /var/loki/index_cache
+          shared_store: filesystem
+
+        filesystem:
+          directory: /var/loki/chunks
+
+  promtail:
+    enabled: true
+
+    config:
+      clients:
+        - url: http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push
+          external_labels:
+            cluster: "dev"
+          basic_auth:
+            username: "fake"  # não é usado, mas requerido pelo client se usar headers
+            password: "fake"
+          tenant_id: "1"  # <--- equivalente ao X-Scope-OrgID: 1
+
+      snippets:
+        pipeline_stages:
+          - docker: {}
+
+      positions:
+        filename: /tmp/positions.yaml
+
+      server:
+        http_listen_port: 9080
+        grpc_listen_port: 0
+
+  ingress-nginx:
+    enabled: true
+  
+    controller:
+      metrics:
+        enabled: true
+        port: 10254
+        portName: metrics
+        service:
+          enabled: true
+          annotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "10254"  
+          servicePort: 10254
+          type: ClusterIP
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: kube-prometheus-stack
+          namespace: monitoring
+          scrapeInterval: 30s
+  
+  keycloak:
+    enabled: true
+  
+    auth:
+      adminUser: admin
+      adminPassword: admin
+  
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      pathType: ImplementationSpecific
+      hostname: keycloak.thesams.site
+  
+    postgresql:
+      enabled: true
+      auth:
+        username: bn_keycloak
+        password: 12345678
+        database: keycloakdb
+    
+      persistence:
+        enabled: true              
+        size: 8Gi    
