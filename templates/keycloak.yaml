@@ -9,7 +9,7 @@ spec:
   sources:
     - chart: keycloak
       #repoURL: oci://registry-1.docker.io/bitnamicharts
-      repoURL: https://charts.bitnami.com/bitnami
+      repoURL: https://repo.broadcom.com/bitnami-files
       targetRevision: 24.8.0
       helm:
         valueFiles:
