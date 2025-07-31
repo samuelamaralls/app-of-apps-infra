@@ -116,3 +116,13 @@ argocd:
             release: kube-prometheus-stack
           namespace: monitoring
           scrapeInterval: 30s
+  
+  keycloak:
+    enable: true
+
+    ingress:
+      enabled: true
+      ingressClassName: "nginx"
+      pathType: ImplementationSpecific
+      hostname: keycloak.thesams.site
+
