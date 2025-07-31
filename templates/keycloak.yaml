@@ -13,7 +13,7 @@ spec:
       type: helm
       helm:
         valueFiles:
-          - values/keycloak.yaml
+          - $values/values/keycloak.yaml
     - repoURL: 'https://github.com/samuelamaralls/app-of-apps-infra.git'
       targetRevision: main
       ref: values
