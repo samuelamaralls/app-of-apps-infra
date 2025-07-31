@@ -10,7 +10,7 @@ postgresql:
   enabled: true
   auth:
     username: bn_keycloak
-    password: 12345678
+    password: "12345678"
     database: keycloakdb
 
   persistence:
