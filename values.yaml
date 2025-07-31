@@ -14,3 +14,6 @@ argocd:
   
   keycloak:
     enabled: true
+
+  cert-manager: 
+    enabled: true
