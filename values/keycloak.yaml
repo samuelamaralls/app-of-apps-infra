@@ -10,10 +10,7 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     #nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  tls:
-    - hosts:
-        - keycloak.thesams.site
-      secretName: keycloak-tls
+  tls: true
 postgresql:
   enabled: true
   auth:
