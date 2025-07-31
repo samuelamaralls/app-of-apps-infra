@@ -4,10 +4,10 @@ argocd:
     enabled: true
 
   loki:
-    enabled: true
+    enabled: false
 
   promtail:
-    enabled: true
+    enabled: false
 
   ingress-nginx:
     enabled: true
