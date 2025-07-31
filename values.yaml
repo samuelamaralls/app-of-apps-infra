@@ -118,7 +118,7 @@ argocd:
           scrapeInterval: 30s
   
   keycloak:
-    enable: true
+    enabled: true
 
     ingress:
       enabled: true
