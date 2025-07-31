@@ -12,7 +12,7 @@ spec:
       targetRevision: 6.15.3
       helm:
         valueFiles:
-          - $values/values.yaml
+          - $values/promtail.yaml
     - repoURL: 'https://github.com/samuelamaralls/app-of-apps-infra.git'
       targetRevision: main
       ref: values
