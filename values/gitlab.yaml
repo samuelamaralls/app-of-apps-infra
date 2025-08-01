@@ -5,6 +5,12 @@ global:
 
 installCertmanager: false
 
+certmanager-issuer:
+  install: false
+
+certmanager:
+  installCRDs: false
+
 ingress:
   enabled: true
   ingressClassName: nginx
