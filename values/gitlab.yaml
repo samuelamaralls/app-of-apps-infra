@@ -2,6 +2,9 @@ global:
   hosts:
     domain: gitlab.thesams.site
 
+
+installCertmanager: false
+
 ingress:
   enabled: true
   ingressClassName: nginx
