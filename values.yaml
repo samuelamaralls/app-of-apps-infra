@@ -17,3 +17,6 @@ argocd:
 
   cert-manager: 
     enabled: true
+  
+  gitlab:
+    enabled: true
