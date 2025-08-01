@@ -1,0 +1,15 @@
+global:
+  hosts:
+    domain: gitlab.thesams.site
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  tls:
+    enabled: true
+    secretName: gitlab-tls
+  path: /
+  pathType: Prefix
