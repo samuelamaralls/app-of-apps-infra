@@ -5,6 +5,8 @@ global:
   hosts:
     domain: gitlab.thesams.site
 
+upgradeCheck:
+  enabled: false
 
 installCertmanager: false
 
