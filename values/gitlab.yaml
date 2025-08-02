@@ -1,4 +1,7 @@
 global:
+  edition: ce
+  gitlab:
+    version: 18.2.0
   hosts:
     domain: gitlab.thesams.site
 
