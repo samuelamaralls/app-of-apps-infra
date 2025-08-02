@@ -3,7 +3,7 @@ global:
   gitlab:
     version: 18.2.0
   hosts:
-    domain: .thesams.site
+    domain: thesams.site
 
 nginx-ingress:
   enabled: false
