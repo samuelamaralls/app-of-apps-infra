@@ -2,8 +2,37 @@ global:
   edition: ce
   gitlab:
     version: 18.2.0
+
+  ## https://docs.gitlab.com/charts/charts/globals#configure-host-settings  
   hosts:
     domain: thesams.site
+    hostSuffix:
+    https: true
+    externalIP:
+    ssh:
+    gitlab: {}
+    minio: {}
+    registry: {}
+    tls: {}
+    smartcard: {}
+    kas: {}
+    pages: {}
+    openbao: {}
+
+  ## https://docs.gitlab.com/charts/charts/globals#configure-ingress-settings
+  ingress:
+    apiVersion: ""
+    configureCertmanager: true
+    useNewIngressForCerts: false
+    class: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    enabled: true
+    tls:
+      enabled: true
+      secretName: 
+    path: /
+    pathType: Prefix
 
 nginx-ingress:
   enabled: false
@@ -20,12 +49,6 @@ upgradeCheck:
 registry:
   enabled: false
 
-kas:
-  enabled: true
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-
 installCertmanager: false
 
 certmanager-issuer:
@@ -34,22 +57,3 @@ certmanager-issuer:
 
 certmanager:
   installCRDs: false
-
-minio:
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-
-webservice:
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    tls:
-      - hosts:
-          - gitlab.thesams.site
-        secretName: gitlab-tls
-    path: /
-    pathType: Prefix
