@@ -1,22 +1,22 @@
-argocd:
-
-  kube-prometheus-stack:
+applications:
+  - name: keycloak
+    namespace: keycloak
     enabled: true
-
-  loki:
+  - name: gitlab
+    namespace: gitlab
     enabled: false
-
-  promtail:
-    enabled: false
-
-  ingress-nginx:
+  - name: promtail
+    namespace: monitoring
     enabled: true
-  
-  keycloak:
+  - name: kube-prometheus-stack
+    namespace: monitoring
     enabled: true
-
-  cert-manager: 
+  - name: loki
+    namespace: loki
     enabled: true
-  
-  gitlab:
+  - name: cert-manager
+    namespace: cert-manager
+    enabled: true
+  - name: ingress-nginx
+    namespace: ingress-nginx
     enabled: true

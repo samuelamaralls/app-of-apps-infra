@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          # Apps externos
+          - name: cert-manager
+            namespace: cert-manager
+            repoURL: 'https://charts.jetstack.io'
+            chart: cert-manager
+            targetRevision: 1.18.2
+
+          - name: gitlab
+            namespace: gitlab
+            repoURL: 'https://charts.gitlab.io/'
+            chart: gitlab
+            targetRevision: 9.2.0
+
+          - name: ingress-nginx
+            namespace: ingress-nginx
+            repoURL: 'https://kubernetes.github.io/ingress-nginx'
+            chart: ingress-nginx
+            targetRevision: 4.13.0
+
+          - name: keycloak
+            namespace: keycloak
+            repoURL: 'oci://registry-1.docker.io/bitnamicharts'
+            chart: keycloak
+            targetRevision: 24.8.0
+
+          - name: kube-prometheus-stack
+            namespace: monitoring
+            repoURL: 'https://prometheus-community.github.io/helm-charts'
+            chart: kube-prometheus-stack
+            targetRevision: 75.15.0
+
+          - name: loki
+            namespace: monitoring
+            repoURL: 'https://grafana.github.io/helm-charts'
+            chart: loki
+            targetRevision: 3.0.1
+
+          - name: promtail
+            namespace: monitoring
+            repoURL: 'https://grafana.github.io/helm-charts'
+            chart: promtail
+            targetRevision: 6.15.3
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        targetRevision: '{{targetRevision}}'
+        helm:
+          valueFiles:
+            - values.yaml
+            - values/{{name}}.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
